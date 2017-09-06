@@ -3,7 +3,6 @@ sudo: false
 before_install:
   # stack
   - mkdir -p ~/.local/bin
-  - export PATH=/opt/ghc/7.10.2/bin:$PATH
   - export PATH=~/.local/bin:$PATH
   - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 
@@ -16,8 +15,7 @@ addons:
     - libgmp-dev
 
 install:
-  - stack install happy
-  - ./travis_long stack --no-terminal --skip-ghc-check setup
+  - ./travis_long stack --no-terminal --skip-ghc-check setup --ghcjs-boot-options -j --ghcjs-boot-options 2 --no-ghcjs-boot-clean
   - ./travis_long stack --no-terminal --skip-ghc-check test --only-snapshot
 
 script:
@@ -27,3 +25,6 @@ script:
 cache:
   directories:
   - $HOME/.stack
+  - $HOME/.ghcjs
+  - $HOME/.ghc
+  - $HOME/.cabal
